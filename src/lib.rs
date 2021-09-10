@@ -832,7 +832,16 @@ impl Glfw {
             None => callbacks::joystick::unset(),
         }
     }
-
+    /// Creates monitor struct from ptr provided by the glfwGetPrimaryMonitor fn
+    ///
+    pub fn from_primary_monitor() -> Option<Monitor> {
+        match unsafe {
+            ffi::glfwGetPrimaryMonitor()}{
+                ptr if ptr.is_null() => None,
+                ptr => Some(&Monitor {ptr})
+            }
+        }
+    }
     /// Supplies the primary monitor to the closure provided, if it exists.
     /// This is usually the monitor where elements like the Windows task bar or
     /// the OS X menu bar is located.
