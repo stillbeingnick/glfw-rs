@@ -832,15 +832,6 @@ impl Glfw {
             None => callbacks::joystick::unset(),
         }
     }
-    /// Creates monitor struct from ptr provided by the `glfwGetPrimaryMonitor` fn
-    ///
-    pub fn from_primary_monitor() -> Option<Monitor> {
-        match unsafe {
-            ffi::glfwGetPrimaryMonitor()}{
-                ptr if ptr.is_null() => None,
-                ptr => Some(Monitor {ptr})
-            }
-    }
     /// Supplies the primary monitor to the closure provided, if it exists.
     /// This is usually the monitor where elements like the Windows task bar or
     /// the OS X menu bar is located.
@@ -1494,6 +1485,15 @@ impl Monitor {
     /// Wrapper for `glfwGetMonitorName`.
     pub fn get_name(&self) -> Option<String> {
         unsafe { string_from_nullable_c_str(ffi::glfwGetMonitorName(self.ptr)) }
+    }
+    /// Creates monitor struct from ptr provided by the `glfwGetPrimaryMonitor` fn
+    ///
+    pub fn from_primary_monitor() -> Option<Monitor> {
+        match unsafe {
+            ffi::glfwGetPrimaryMonitor()}{
+                ptr if ptr.is_null() => None,
+                ptr => Some(Monitor {ptr})
+            }
     }
 
     /// Wrapper for `glfwGetVideoModes`.
